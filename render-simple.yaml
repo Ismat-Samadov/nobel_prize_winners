@@ -1,0 +1,35 @@
+services:
+  # Simplified unified service for demo deployment
+  - type: web
+    name: active-learning-ner-demo
+    env: python
+    buildCommand: |
+      # Install Node.js 18
+      curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+      apt-get install -y nodejs
+      
+      # Install only essential Python packages
+      pip install --upgrade pip
+      pip install fastapi==0.104.1 uvicorn[standard]==0.24.0 pydantic==2.5.0 python-multipart==0.0.6 aiofiles==23.2.1 numpy pandas scikit-learn matplotlib seaborn Pillow requests
+      
+      # Build frontend
+      cd frontend
+      npm ci --only=production
+      npm run build
+      cd ..
+      
+      # Move frontend build to serve from FastAPI
+      mkdir -p api/static
+      cp -r frontend/build/* api/static/
+      
+    startCommand: |
+      cd api
+      python -m uvicorn main_unified_simple:app --host 0.0.0.0 --port $PORT
+      
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DEMO_MODE
+        value: "true"
+        
+    plan: free
