@@ -1,43 +1,11 @@
 services:
-  # Backend API Service
   - type: web
-    name: active-learning-ner-api
+    name: active-learning-ner
     env: python
-    buildCommand: |
-      cd api
-      pip install -r requirements.txt
-    startCommand: |
-      cd api
-      uvicorn main:app --host 0.0.0.0 --port $PORT
-    envVars:
-      - key: PYTHONPATH
-        value: /opt/render/project/src/api:/opt/render/project/src
-      - key: PORT
-        value: 8000
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "cd api && python main_simple.py"
     plan: free
-    
-  # Frontend Service  
-  - type: web
-    name: active-learning-ner-frontend
-    env: node
-    buildCommand: |
-      cd frontend
-      npm ci
-      npm run build
-    startCommand: |
-      cd frontend
-      npm install -g serve
-      serve -s build -l $PORT
+    healthCheckPath: /
     envVars:
-      - key: REACT_APP_API_URL
-        value: https://active-learning-ner-api.onrender.com
-      - key: PORT
-        value: 3000
-    plan: free
-
-# Databases (if needed in the future)
-# databases:
-#   - name: ner-database
-#     databaseName: ner_db
-#     user: ner_user
-#     plan: free
+      - key: PYTHON_VERSION
+        value: "3.10"

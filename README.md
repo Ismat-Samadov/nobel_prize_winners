@@ -347,6 +347,11 @@ pip install -r requirements.txt
 python api/main_simple.py
 ```
 
+Or even simpler:
+```bash
+./start.sh
+```
+
 That's it! The application includes:
 - **Home**: Feature overview and navigation
 - **Predict**: NER prediction interface  
@@ -354,44 +359,35 @@ That's it! The application includes:
 - **Sessions**: Training session management
 - **Results**: Comprehensive results dashboard
 
-### **Docker Development**
+### **What Was Removed**
+- ❌ React frontend (complex build process)
+- ❌ Node.js dependencies 
+- ❌ Docker configurations
+- ❌ Complex deployment files
+- ❌ Heavy ML dependencies (PyTorch, transformers)
 
-```bash
-# Build and run with Docker Compose
-docker-compose up --build
-
-# Access the same URLs as above
-```
+### **What Remains**
+- ✅ FastAPI backend with Jinja2 templates
+- ✅ All original functionality preserved
+- ✅ Lightweight rule-based NER demo
+- ✅ Simple two-command deployment
+- ✅ Clean, maintainable codebase
 
 ### **Production Deployment**
 
-Choose between two deployment options:
+Deploy to Render with one click:
 
-#### **🚀 Option 1: Unified Single Service (Recommended)**
 ```bash
-# Single deployment - frontend + backend together
-cp render-unified.yaml render.yaml
-# Deploy to Render - only one service needed
-# Access everything at: https://your-app.onrender.com
+# Deploy using render.yaml configuration
+git push origin main
+# Connect your GitHub repo to Render
+# Automatic deployment with render.yaml
 ```
 
-**Advantages:** Lower cost, simpler management, no CORS issues, single URL
-
-#### **🔧 Option 2: Separate Services**
-```bash
-# Two separate deployments (current setup)
-# Frontend: https://your-frontend.onrender.com  
-# Backend: https://your-backend.onrender.com
-```
-
-**Advantages:** Independent scaling, faster builds, technology flexibility
-
-See [DEPLOYMENT_OPTIONS.md](DEPLOYMENT_OPTIONS.md) for detailed comparison and [README_DEPLOYMENT.md](README_DEPLOYMENT.md) for comprehensive deployment instructions for:
-- **Render** (recommended)
-- **Heroku** 
-- **AWS Elastic Beanstalk**
-- **Google Cloud Platform**
-- **Self-hosted Docker**
+The `render.yaml` file is pre-configured for simple deployment:
+- Build command: `pip install -r requirements.txt`
+- Start command: `cd api && python main_simple.py`
+- Free tier compatible
 
 ## 🎯 Usage Examples
 
