@@ -1,12 +1,12 @@
 # Active Learning for Named Entity Recognition
 
-A comprehensive full-stack system for reducing labeled data requirements in Named Entity Recognition (NER) using intelligent active learning techniques. This project provides both a research framework and a production-ready web application.
+A simplified FastAPI system for reducing labeled data requirements in Named Entity Recognition (NER) using intelligent active learning techniques. This project provides both a research framework and a production-ready web application with server-side rendering.
 
 ## 📊 System Overview
 
 ```mermaid
 graph TB
-    subgraph "Frontend (React)"
+    subgraph "Web Interface (Jinja2 Templates)"
         A[Home Page] --> B[Prediction Interface]
         A --> C[Training Configuration]
         A --> D[Session Management]
@@ -15,28 +15,26 @@ graph TB
         F --> G[Results Dashboard]
     end
     
-    subgraph "Backend (FastAPI)"
-        H[API Gateway] --> I[NER Prediction Service]
+    subgraph "FastAPI Backend"
+        H[Template Rendering] --> I[NER Prediction Service]
         H --> J[Training Service]
-        H --> K[File Upload Service]
-        H --> L[Session Management]
-        J --> M[Active Learning Engine]
+        H --> K[Session Management]
+        J --> L[Active Learning Engine]
     end
     
     subgraph "Core ML System"
-        N[BERT-based NER Model]
-        O[Active Learning Strategies]
-        P[Data Management]
-        Q[Training Loop]
-        R[Evaluation Framework]
+        M[Lightweight NER Model]
+        N[Active Learning Strategies]
+        O[Data Management]
+        P[Training Loop]
     end
     
-    Frontend --> Backend
-    Backend --> Core
+    A --> H
+    H --> M
     
     style A fill:#e1f5fe
-    style N fill:#f3e5f5
-    style O fill:#e8f5e8
+    style M fill:#f3e5f5
+    style N fill:#e8f5e8
 ```
 
 This system implements multiple active learning strategies to minimize the amount of labeled data needed for training effective NER models. By intelligently selecting the most informative samples for human annotation, it achieves competitive performance with **50-80% less labeled data**.
@@ -50,15 +48,16 @@ This system implements multiple active learning strategies to minimize the amoun
 - **Hybrid Sampling**: Combined uncertainty and diversity approaches
 - **Monte Carlo Dropout**: Uncertainty estimation with stochastic inference
 
-### **🤖 Flexible NER Models**
-- BERT-based architecture with optional CRF layer
-- Support for any HuggingFace transformer model
-- Real-time uncertainty estimation
-- GPU acceleration support
+### **🤖 Lightweight NER Models**
+- Rule-based NER for demo purposes
+- Extensible architecture for ML models
+- Real-time prediction capabilities
+- CPU-optimized for deployment
 
-### **🌐 Production Web Application**
-- Interactive React frontend with Material-UI
-- RESTful FastAPI backend
+### **🌐 Simple Web Application**
+- Server-side rendered HTML with Jinja2 templates
+- Bootstrap 5 for responsive design
+- FastAPI backend with minimal dependencies
 - Real-time training session management
 - Interactive annotation interface
 - Comprehensive results visualization
@@ -102,96 +101,75 @@ flowchart LR
 ```
 NER/
 ├── 🌐 api/                           # FastAPI Backend Service
-│   ├── main.py                       # Main API application with all endpoints
-│   ├── requirements.txt              # Python backend dependencies
-│   └── Dockerfile                    # Container configuration for API
+│   ├── main_simple.py               # Single FastAPI app with Jinja2 templates
+│   ├── requirements.txt             # Minimal Python dependencies
+│   └── templates/                   # HTML templates
+│       ├── base.html                # Base template with Bootstrap
+│       ├── home.html                # Landing page
+│       ├── predict.html             # NER prediction interface
+│       ├── train.html               # Training configuration
+│       ├── sessions.html            # Session management
+│       ├── session_detail.html      # Session details & annotation
+│       └── results.html             # Results dashboard
 │
-├── 🎨 frontend/                      # React Frontend Application
-│   ├── src/
-│   │   ├── components/               # Reusable UI components
-│   │   │   ├── EntityHighlighter.js  # NER entity visualization component
-│   │   │   └── Navigation.js         # Main navigation component
-│   │   ├── pages/                    # Main application pages
-│   │   │   ├── HomePage.js           # Landing page with feature overview
-│   │   │   ├── PredictPage.js        # Text prediction interface
-│   │   │   ├── TrainPage.js          # Training configuration page
-│   │   │   ├── SessionsPage.js       # Training session management
-│   │   │   ├── AnnotatePage.js       # Interactive annotation interface
-│   │   │   └── ResultsPage.js        # Results visualization dashboard
-│   │   ├── services/
-│   │   │   └── api.js                # API integration and HTTP client
-│   │   ├── App.js                    # Main application component
-│   │   ├── index.js                  # Application entry point
-│   │   └── index.css                 # Global styles and theme
-│   ├── public/
-│   │   ├── index.html                # HTML template
-│   │   └── manifest.json             # PWA configuration
-│   ├── package.json                  # Node.js dependencies
-│   ├── Dockerfile                    # Container configuration for frontend
-│   └── nginx.conf                    # Production web server configuration
-│
-├── 🧠 src/                           # Core Machine Learning System
+├── 🧠 src/                          # Core Machine Learning System
 │   ├── models/
 │   │   ├── __init__.py
-│   │   └── bert_ner.py               # BERT-based NER model with uncertainty estimation
+│   │   └── bert_ner.py              # BERT-based NER model (for research)
 │   ├── active_learning/
 │   │   ├── __init__.py
-│   │   └── strategies.py             # All active learning strategy implementations
+│   │   └── strategies.py            # Active learning strategies
 │   ├── data/
 │   │   ├── __init__.py
-│   │   └── dataset.py                # Data loading, preprocessing, and management
+│   │   └── dataset.py               # Data loading and preprocessing
 │   └── utils/
 │       ├── __init__.py
-│       ├── trainer.py                # Active learning training orchestrator
-│       └── evaluation.py             # Evaluation metrics and visualization
+│       ├── trainer.py               # Training orchestrator
+│       └── evaluation.py            # Evaluation metrics
 │
-├── 🧪 experiments/                   # Research and Experimentation Scripts
-│   ├── run_active_learning.py       # Main experiment runner with CLI
-│   ├── create_sample_data.py        # Synthetic data generation for demos
-│   ├── config.json                  # Default experiment configuration
-│   └── README.md                    # Detailed experiment documentation
-│
-├── 🐳 Deployment Configuration
-│   ├── docker-compose.yml           # Local development environment
-│   ├── render.yaml                  # Render cloud deployment configuration
-│   └── README_DEPLOYMENT.md         # Comprehensive deployment guide
+├── 🧪 experiments/                  # Research Scripts
+│   ├── run_active_learning.py      # Main experiment runner
+│   ├── create_sample_data.py       # Data generation
+│   ├── config.json                 # Experiment configuration
+│   └── README.md                   # Experiment documentation
 │
 ├── 📋 Project Configuration
-│   ├── requirements.txt             # Core Python dependencies
-│   ├── package.json                 # Project-level Node.js scripts
-│   ├── gitignore                    # Git ignore rules
-│   └── LICENSE                      # MIT license
+│   ├── requirements.txt            # Core Python dependencies
+│   ├── render.yaml                 # Simple deployment config
+│   ├── start.sh                    # One-command startup script
+│   ├── gitignore                   # Git ignore rules
+│   └── LICENSE                     # MIT license
 │
-└── 📊 data/                         # Training data directory (created automatically)
+└── 📊 data/                        # Training data (created automatically)
 ```
 
 ## 🧠 Core Components Deep Dive
 
-### **1. BERT-based NER Model (`src/models/bert_ner.py`)**
+### **1. Lightweight NER System (`api/main_simple.py`)**
 
 ```mermaid
 graph LR
-    A[Input Text] --> B[BERT Tokenizer]
-    B --> C[BERT Encoder]
-    C --> D[Dropout Layer]
-    D --> E[Linear Classifier]
-    E --> F["CRF Layer (Optional)"]
-    F --> G[NER Predictions]
+    A[Input Text] --> B[Text Processing]
+    B --> C[Rule-Based NER]
+    C --> D[Entity Detection]
+    D --> E[Confidence Scoring]
+    E --> F[NER Predictions]
     
-    C --> H[Uncertainty Estimation]
-    H --> I["Entropy/MC Dropout"]
+    A --> G[Jinja2 Templates]
+    G --> H[HTML Response]
     
     style C fill:#e3f2fd
-    style F fill:#f3e5f5
+    style G fill:#f3e5f5
     style H fill:#e8f5e8
 ```
 
 **Features:**
-- Pre-trained BERT foundation with task-specific fine-tuning
-- Optional CRF layer for sequence-level optimization
-- Multiple uncertainty estimation methods
-- GPU acceleration and batch processing
-- Support for any HuggingFace transformer model
+- Lightweight rule-based NER for demo purposes
+- No heavy ML dependencies (PyTorch, transformers)
+- Fast CPU-based processing
+- Server-side HTML rendering with Jinja2
+- Bootstrap 5 responsive design
+- Extensible architecture for ML models
 
 ### **2. Active Learning Strategies (`src/active_learning/strategies.py`)**
 
@@ -273,49 +251,36 @@ sequenceDiagram
 - Multi-strategy comparison framework
 - Background task processing for web interface
 
-### **4. Web Application Architecture**
+### **4. Simplified Web Architecture**
 
 ```mermaid
 graph TB
-    subgraph "Frontend Layer"
-        A[React Components] --> B[Material-UI Styling]
-        A --> C[Recharts Visualization]
-        A --> D[React Router Navigation]
+    subgraph "Template Layer"
+        A[Jinja2 Templates] --> B[Bootstrap Styling]
+        A --> C[HTML Forms]
+        A --> D[Entity Highlighting]
     end
     
-    subgraph "API Layer"
-        E[FastAPI Routes] --> F[Pydantic Validation]
-        E --> G[Background Tasks]
-        E --> H[CORS Middleware]
+    subgraph "FastAPI Layer"
+        E[Route Handlers] --> F[Template Rendering]
+        E --> G[Form Processing]
+        E --> H[Session Management]
     end
     
     subgraph "Business Logic"
-        I[NER Prediction Service]
-        J[Training Orchestrator]
-        K[File Processing Service]
-        L[Session Management]
-    end
-    
-    subgraph "Data Layer"
-        M[In-Memory Cache]
-        N[File System Storage]
-        O[Model Checkpoints]
+        I[NER Demo Service]
+        J[Active Learning Simulator]
+        K[Session Storage]
     end
     
     A --> E
     E --> I
     E --> J
     E --> K
-    E --> L
-    I --> M
-    J --> N
-    K --> N
-    L --> O
     
     style A fill:#e1f5fe
     style E fill:#f3e5f5
     style I fill:#e8f5e8
-    style M fill:#fff3e0
 ```
 
 ## 🔧 Installation and Setup
@@ -480,42 +445,26 @@ graph TD
 - **95%+ accuracy** achievable with optimal strategies
 - **Real-time inference** with <100ms response time
 
-## 🛠️ API Endpoints
+## 🛠️ Web Interface Routes
 
-### **Core Endpoints**
+### **Template Routes**
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/` | API information and health status |
-| `POST` | `/predict` | NER prediction on input text |
-| `POST` | `/upload` | Upload training data files |
-| `POST` | `/train` | Start active learning session |
-| `GET` | `/sessions` | List all training sessions |
-| `GET` | `/sessions/{id}` | Get session details |
-| `POST` | `/annotate` | Submit annotations |
-| `GET` | `/results/{id}` | Get training results |
-| `DELETE` | `/sessions/{id}` | Delete training session |
-| `GET` | `/health` | Health check endpoint |
+| Method | Route | Description | Template |
+|--------|-------|-------------|----------|
+| `GET` | `/` | Homepage with features overview | `home.html` |
+| `GET/POST` | `/predict` | NER prediction interface | `predict.html` |
+| `GET/POST` | `/train` | Training session configuration | `train.html` |
+| `GET` | `/sessions` | Training sessions list | `sessions.html` |
+| `GET` | `/sessions/{id}` | Session details & annotation | `session_detail.html` |
+| `POST` | `/annotate/{id}` | Submit annotations (form) | Redirect to session |
+| `GET` | `/results/{id}` | Training results dashboard | `results.html` |
 
-### **Example API Usage**
-
-```python
-import requests
-
-# Predict entities in text
-response = requests.post("http://localhost:8000/predict", 
-    json={"text": "John Smith works at Google in California."})
-print(response.json())
-
-# Start training session
-config = {
-    "strategy": "uncertainty",
-    "num_rounds": 10,
-    "samples_per_round": 100
-}
-response = requests.post("http://localhost:8000/train", json=config)
-session_id = response.json()["session_id"]
-```
+### **Key Features**
+- **Server-side rendering**: All pages generated with Jinja2 templates
+- **Bootstrap styling**: Responsive design with modern UI
+- **Form-based interactions**: No JavaScript APIs needed
+- **Session management**: In-memory storage for demo purposes
+- **Entity highlighting**: CSS-based entity visualization
 
 ## 🔬 Research and Experimentation
 
@@ -579,15 +528,15 @@ We welcome contributions! Please see our contribution guidelines:
 ```bash
 # Install development dependencies
 pip install -r requirements.txt
-npm install
 
-# Run tests
-npm run test:api
-npm run test:frontend
+# Run the application
+./start.sh
 
-# Run linting
-npm run lint:api
-npm run lint:frontend
+# Run tests (if available)
+python -m pytest
+
+# Code formatting
+python -m black api/
 ```
 
 ## 📝 License
@@ -598,7 +547,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **HuggingFace Transformers** for pre-trained models
 - **FastAPI** for the robust API framework
-- **React and Material-UI** for the frontend framework
+- **Bootstrap 5** for responsive design framework
 - **PyTorch** for deep learning capabilities
 - **scikit-learn** for machine learning utilities
 
