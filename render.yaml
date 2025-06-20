@@ -3,7 +3,7 @@ services:
     name: active-learning-ner
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "cd api && python main_simple.py"
+    startCommand: "python api/main_simple.py"
     plan: free
     healthCheckPath: /
     envVars:

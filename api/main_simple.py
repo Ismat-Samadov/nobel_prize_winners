@@ -19,16 +19,36 @@ logger = logging.getLogger(__name__)
 # Initialize FastAPI app
 app = FastAPI(title="Active Learning NER", description="Active Learning for Named Entity Recognition")
 
-# Create directories
-os.makedirs("static", exist_ok=True)
-os.makedirs("templates", exist_ok=True)
-os.makedirs("uploads", exist_ok=True)
+# Get the directory where this script is located
+current_dir = os.path.dirname(os.path.abspath(__file__))
+logger.info(f"Current script directory: {current_dir}")
+logger.info(f"Working directory: {os.getcwd()}")
 
-# Mount static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Create directories relative to script location
+static_dir = os.path.join(current_dir, "static")
+templates_dir = os.path.join(current_dir, "templates")
+uploads_dir = os.path.join(current_dir, "uploads")
+
+logger.info(f"Templates directory: {templates_dir}")
+logger.info(f"Templates exist: {os.path.exists(templates_dir)}")
+
+os.makedirs(static_dir, exist_ok=True)
+os.makedirs(templates_dir, exist_ok=True)
+os.makedirs(uploads_dir, exist_ok=True)
+
+# Check if templates exist
+if os.path.exists(templates_dir):
+    template_files = os.listdir(templates_dir)
+    logger.info(f"Template files found: {template_files}")
+else:
+    logger.error(f"Templates directory not found: {templates_dir}")
+
+# Mount static files (only if directory exists)
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # Setup Jinja2 templates
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=templates_dir)
 
 # Pydantic models
 class TextRequest(BaseModel):
