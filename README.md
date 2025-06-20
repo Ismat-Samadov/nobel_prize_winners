@@ -322,36 +322,37 @@ graph TB
 
 ### **Prerequisites**
 - Python 3.8+ 
-- Node.js 16+
 - Git
 
-### **Quick Start (Development)**
+### **Quick Start (Simplified FastAPI + Jinja2)**
 
 ```bash
 # Clone the repository
 git clone https://github.com/Ismat-Samadov/NER.git
 cd NER
 
-# Install Python dependencies
+# Install dependencies
 pip install -r requirements.txt
 
-# Install Node.js dependencies
-npm install
-cd frontend && npm install && cd ..
-
-# Generate sample data
-cd experiments
-python create_sample_data.py
-cd ..
-
-# Start development servers
-npm run dev
+# Start the application
+cd api
+python main_simple.py
 ```
 
-Access the application:
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **API Documentation**: http://localhost:8000/docs
+Access the application at **http://localhost:8000**
+
+### **Two Commands Only**
+```bash
+pip install -r requirements.txt
+python api/main_simple.py
+```
+
+That's it! The application includes:
+- **Home**: Feature overview and navigation
+- **Predict**: NER prediction interface  
+- **Train**: Active learning session configuration
+- **Sessions**: Training session management
+- **Results**: Comprehensive results dashboard
 
 ### **Docker Development**
 

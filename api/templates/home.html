@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Active Learning NER{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-gradient text-white p-5 rounded mb-4" style="background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);">
+            <div class="container text-center">
+                <h1 class="display-4"><i class="fas fa-brain me-3"></i>Active Learning for NER</h1>
+                <p class="lead">Reduce labeled data requirements for Named Entity Recognition using intelligent active learning</p>
+                <a class="btn btn-light btn-lg" href="/predict" role="button">
+                    <i class="fas fa-play me-2"></i>Get Started
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card h-100 text-center session-card">
+            <div class="card-body">
+                <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Text Prediction</h5>
+                <p class="card-text">Get instant NER predictions on your text using our demo model.</p>
+                <a href="/predict" class="btn btn-primary">Try Prediction</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 text-center session-card">
+            <div class="card-body">
+                <i class="fas fa-graduation-cap fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Active Learning Training</h5>
+                <p class="card-text">Train custom NER models with minimal labeled data using active learning.</p>
+                <a href="/train" class="btn btn-success">Start Training</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 text-center session-card">
+            <div class="card-body">
+                <i class="fas fa-list fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Training Sessions</h5>
+                <p class="card-text">Monitor and manage your active learning training sessions.</p>
+                <a href="/sessions" class="btn btn-info">View Sessions</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Benefits -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Benefits</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>50-80% reduction in labeling effort</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Faster convergence to target performance</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Better generalization through diverse sampling</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Cost-effective annotation process</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Multiple active learning strategies</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Real-time performance monitoring</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>How It Works</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                        <span class="badge bg-primary rounded-pill">1</span>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <strong>Upload Your Data</strong><br>
+                        <small class="text-muted">Start with a small labeled dataset or upload unlabeled text</small>
+                    </div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                        <span class="badge bg-primary rounded-pill">2</span>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <strong>Train Initial Model</strong><br>
+                        <small class="text-muted">Begin with a basic model trained on available labeled data</small>
+                    </div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                        <span class="badge bg-primary rounded-pill">3</span>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <strong>Active Selection</strong><br>
+                        <small class="text-muted">AI selects the most informative samples for labeling</small>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <span class="badge bg-primary rounded-pill">4</span>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <strong>Iterative Improvement</strong><br>
+                        <small class="text-muted">Label selected samples and retrain for better performance</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card performance-card">
+            <div class="card-body text-center">
+                <h5 class="card-title">Active Learning Performance</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2>50-80%</h2>
+                        <p>Reduction in labeling effort</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>5x</h2>
+                        <p>Faster convergence</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>95%+</h2>
+                        <p>Target accuracy achievable</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

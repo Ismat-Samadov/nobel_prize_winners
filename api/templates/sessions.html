@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Sessions - Active Learning NER{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2><i class="fas fa-list me-2"></i>Training Sessions</h2>
+                <p class="text-muted mb-0">Monitor and manage your active learning training sessions</p>
+            </div>
+            <a href="/train" class="btn btn-success">
+                <i class="fas fa-plus me-2"></i>New Session
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if sessions %}
+<div class="row g-4">
+    {% for session in sessions %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card session-card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-cog me-2"></i>Session {{ session.session_id[:8] }}...
+                    </h6>
+                    <span class="badge 
+                        {% if session.status == 'completed' %}bg-success
+                        {% elif session.status == 'active_learning' %}bg-primary
+                        {% elif session.status == 'running' %}bg-info
+                        {% elif session.status == 'error' %}bg-danger
+                        {% else %}bg-warning{% endif %}">
+                        {% if session.status == 'active_learning' %}Ready for Annotation
+                        {% elif session.status == 'initializing' %}Initializing
+                        {% else %}{{ session.status.title() }}{% endif %}
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <small class="text-muted">Strategy:</small>
+                    <div><strong>{{ session.strategy.title() }} Sampling</strong></div>
+                </div>
+
+                <!-- Progress -->
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <small class="text-muted">Progress:</small>
+                        <small>{{ session.current_round }}/{{ session.total_rounds }}</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {{ (session.current_round / session.total_rounds * 100) if session.total_rounds > 0 else 0 }}%"></div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="row text-center mb-3">
+                    <div class="col-6">
+                        <div class="border-end">
+                            <div class="h6 mb-0 text-success">{{ session.labeled_samples }}</div>
+                            <small class="text-muted">Labeled</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="h6 mb-0 text-info">{{ session.unlabeled_samples }}</div>
+                        <small class="text-muted">Unlabeled</small>
+                    </div>
+                </div>
+
+                <!-- Performance -->
+                {% if session.performance %}
+                <div class="mb-3">
+                    <small class="text-muted">F1 Score:</small>
+                    <div class="d-flex align-items-center">
+                        <div class="progress flex-grow-1 me-2" style="height: 6px;">
+                            <div class="progress-bar bg-success" style="width: {{ session.performance.f1 * 100 }}%"></div>
+                        </div>
+                        <small><strong>{{ "%.3f"|format(session.performance.f1) }}</strong></small>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Timestamps -->
+                <div class="small text-muted mb-3">
+                    <div>Created: {{ session.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                    <div>Updated: {{ session.updated_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-grid gap-2">
+                    {% if session.status == 'active_learning' %}
+                    <a href="/sessions/{{ session.session_id }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-edit me-1"></i>Annotate Samples
+                    </a>
+                    {% elif session.status == 'completed' or session.current_round > 0 %}
+                    <a href="/results/{{ session.session_id }}" class="btn btn-success btn-sm">
+                        <i class="fas fa-chart-line me-1"></i>View Results
+                    </a>
+                    {% else %}
+                    <a href="/sessions/{{ session.session_id }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-eye me-1"></i>View Details
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="row">
+    <div class="col-12">
+        <div class="text-center py-5">
+            <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+            <h4>No Training Sessions Found</h4>
+            <p class="text-muted">Start your first active learning session to begin training a custom NER model.</p>
+            <a href="/train" class="btn btn-success btn-lg">
+                <i class="fas fa-plus me-2"></i>Start New Session
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Statistics Summary -->
+{% if sessions %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Sessions Summary</h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="h4 text-primary">{{ sessions|length }}</div>
+                        <small class="text-muted">Total Sessions</small>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="h4 text-success">{{ sessions|selectattr('status', 'equalto', 'completed')|list|length }}</div>
+                        <small class="text-muted">Completed</small>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="h4 text-info">{{ sessions|selectattr('status', 'equalto', 'active_learning')|list|length }}</div>
+                        <small class="text-muted">Active</small>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="h4 text-warning">{{ sessions|selectattr('status', 'in', ['initializing', 'running'])|list|length }}</div>
+                        <small class="text-muted">In Progress</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
