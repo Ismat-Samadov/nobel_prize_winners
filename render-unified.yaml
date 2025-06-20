@@ -1,0 +1,36 @@
+services:
+  # Single unified service that serves both frontend and backend
+  - type: web
+    name: active-learning-ner
+    env: python
+    buildCommand: |
+      # Install Python dependencies
+      pip install -r api/requirements.txt
+      
+      # Install Node.js and frontend dependencies
+      curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+      sudo apt-get install -y nodejs
+      
+      # Build frontend
+      cd frontend
+      npm ci
+      npm run build
+      cd ..
+      
+      # Move frontend build to serve from FastAPI
+      mkdir -p api/static
+      cp -r frontend/build/* api/static/
+      
+    startCommand: |
+      cd api
+      uvicorn main:app --host 0.0.0.0 --port $PORT
+      
+    envVars:
+      - key: PYTHONPATH
+        value: /opt/render/project/src/api:/opt/render/project/src
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+        
+    plan: free
