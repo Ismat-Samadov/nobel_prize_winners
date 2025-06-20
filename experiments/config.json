@@ -1,0 +1,29 @@
+{
+    "model_name": "bert-base-uncased",
+    "num_labels": 9,
+    "use_crf": false,
+    
+    "train_file": "data/train.conll",
+    "test_file": "data/test.conll",
+    "initial_labeled_ratio": 0.1,
+    "max_length": 128,
+    
+    "strategy": "uncertainty",
+    "uncertainty_method": "entropy",
+    "num_rounds": 10,
+    "samples_per_round": 100,
+    
+    "epochs_per_round": 3,
+    "batch_size": 16,
+    "learning_rate": 2e-5,
+    "weight_decay": 0.01,
+    "warmup_steps": 0,
+    
+    "device": "auto",
+    "output_dir": "./outputs",
+    "seed": 42,
+    "log_level": "INFO",
+    
+    "compare_strategies": false,
+    "num_runs": 3
+}
