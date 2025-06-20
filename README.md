@@ -175,11 +175,11 @@ graph LR
     B --> C[BERT Encoder]
     C --> D[Dropout Layer]
     D --> E[Linear Classifier]
-    E --> F[CRF Layer (Optional)]
+    E --> F["CRF Layer (Optional)"]
     F --> G[NER Predictions]
     
     C --> H[Uncertainty Estimation]
-    H --> I[Entropy/MC Dropout]
+    H --> I["Entropy/MC Dropout"]
     
     style C fill:#e3f2fd
     style F fill:#f3e5f5
@@ -364,9 +364,30 @@ docker-compose up --build
 
 ### **Production Deployment**
 
-See [README_DEPLOYMENT.md](README_DEPLOYMENT.md) for comprehensive deployment instructions for:
+Choose between two deployment options:
+
+#### **🚀 Option 1: Unified Single Service (Recommended)**
+```bash
+# Single deployment - frontend + backend together
+cp render-unified.yaml render.yaml
+# Deploy to Render - only one service needed
+# Access everything at: https://your-app.onrender.com
+```
+
+**Advantages:** Lower cost, simpler management, no CORS issues, single URL
+
+#### **🔧 Option 2: Separate Services**
+```bash
+# Two separate deployments (current setup)
+# Frontend: https://your-frontend.onrender.com  
+# Backend: https://your-backend.onrender.com
+```
+
+**Advantages:** Independent scaling, faster builds, technology flexibility
+
+See [DEPLOYMENT_OPTIONS.md](DEPLOYMENT_OPTIONS.md) for detailed comparison and [README_DEPLOYMENT.md](README_DEPLOYMENT.md) for comprehensive deployment instructions for:
 - **Render** (recommended)
-- **Heroku**
+- **Heroku** 
 - **AWS Elastic Beanstalk**
 - **Google Cloud Platform**
 - **Self-hosted Docker**
@@ -438,14 +459,22 @@ python run_active_learning.py \
 ### **Sample Efficiency Comparison**
 
 ```mermaid
-xychart-beta
-    title "Active Learning Performance Comparison"
-    x-axis ["10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%"]
-    y-axis "F1 Score" 0.60 --> 0.95
-    line "Uncertainty Sampling" [0.65, 0.72, 0.78, 0.83, 0.87, 0.90, 0.92, 0.94]
-    line "Query by Committee" [0.63, 0.70, 0.76, 0.81, 0.85, 0.88, 0.91, 0.93]
-    line "Diversity Sampling" [0.62, 0.68, 0.74, 0.79, 0.83, 0.86, 0.89, 0.91]
-    line "Random Baseline" [0.60, 0.65, 0.69, 0.73, 0.77, 0.81, 0.84, 0.87]
+graph TD
+    subgraph "Performance Comparison (F1 Score vs Labeled Data %)"
+        A["10% Data: Uncertainty(0.65) > Committee(0.63) > Diversity(0.62) > Random(0.60)"]
+        B["30% Data: Uncertainty(0.78) > Committee(0.76) > Diversity(0.74) > Random(0.69)"]
+        C["50% Data: Uncertainty(0.87) > Committee(0.85) > Diversity(0.83) > Random(0.77)"]
+        D["80% Data: Uncertainty(0.94) > Committee(0.93) > Diversity(0.91) > Random(0.87)"]
+        
+        A --> B
+        B --> C
+        C --> D
+    end
+    
+    style A fill:#ffebee
+    style B fill:#e8f5e8
+    style C fill:#e3f2fd
+    style D fill:#f3e5f5
 ```
 
 ### **Typical Results**
