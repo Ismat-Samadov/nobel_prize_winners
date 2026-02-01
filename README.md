@@ -97,8 +97,6 @@ Across 115 years of Nobel Prizes, only **47 women** have won compared to **834 m
 
 ![Collaboration Absolute Numbers](charts/07_collaboration_absolute.png)
 
-![Collaboration Percentage Trend](charts/07_collaboration_percentage.png)
-
 **Why this matters:**
 - Breakthrough research increasingly requires interdisciplinary teams and collaboration
 - The "lone genius" model is becoming obsolete in modern science
