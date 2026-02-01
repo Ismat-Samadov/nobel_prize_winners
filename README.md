@@ -18,8 +18,6 @@ The United States has produced **259 Nobel laureates** (29.4% of all individual 
 
 ![USA vs World Absolute](charts/06_usa_vs_world_absolute.png)
 
-![USA Market Share](charts/06_usa_market_share.png)
-
 **Why this matters:**
 - The U.S. demonstrates sustained competitive advantage in attracting and developing world-class scientific talent
 - This concentration of excellence creates ecosystem effects: top talent attracts more top talent
